@@ -1,0 +1,188 @@
+<table cellspacing="0" cellpadding="0" style="border-width:1px; border-style:solid; border-color:#804000; background-color:#F1EBDD;" align="center">
+   <tr>
+      <td>
+         <div class="content_main" style="display:block;">
+            <img usemap="#map" width="600" height="418" src="{$config.cdn}/graphic/visual/back_none.jpg">
+            
+             {foreach from=$built_builds item=dbname key=id}
+                {if $dbname == 'place'}
+                    {if $village.place >= 1}
+                         <div class="p_place_flag"></div><img class="p_place" src="{$config.cdn}/graphic/visual/place1.png"/>
+                    {/if}
+                {/if}
+                {if $dbname == 'main'}
+                    <div class="flag_m">{$village.main}</div>
+                    {if $is_building}
+                       {if $village.main < '5'}
+                          <img class="p_main" src="{$config.cdn}/graphic/visual/main1.gif"/>
+                       {elseif $village.main >= '5' && $village.main < '15'}
+                          <img class="p_main" src="{$config.cdn}/graphic/visual/main2.gif"/>
+                       {elseif $village.main >= '15'}
+                         <img class="p_main" src="{$config.cdn}/graphic/visual/main3.gif"/>
+                       {/if}
+                    {else}
+                        {if $village.main < '5'}
+                          <img class="p_main" src="{$config.cdn}/graphic/visual/main1.png"/>
+                       {elseif $village.main >= '5' && $village.main < '15'}
+                          <img class="p_main" src="{$config.cdn}/graphic/visual/main2.png"/>
+                       {elseif $village.main >= '15'}
+                          <img class="p_main" src="{$config.cdn}/graphic/visual/main3.png"/>
+                       {/if}
+                    {/if}
+                {else if $dbname == 'barracks'}
+                <div class="p_barracks flag_b">{$village.main}</div>
+                   {if $is_recruting_b}
+                       {if $village.barracks < '5'}
+                          <div class="p_barracks_flag"></div><img class="p_barracks" src="{$config.cdn}/graphic/visual/barracks1.gif"/>
+                       {elseif $village.barracks >= '10' && $village.barracks < '20'}
+                          <div class="p_barracks_flag"></div><img class="p_barracks" src="{$config.cdn}/graphic/visual/barracks2.gif"/>
+                       {elseif $village.barracks >= '20'}
+                          <div class="p_barracks_flag"></div><img class="p_barracks" src="{$config.cdn}/graphic/visual/barracks3.gif"/>
+                       {/if}
+                    {else}
+                        {if $village.barracks < '5'}
+                          <div class="p_barracks_flag"></div><img class="p_barracks" src="{$config.cdn}/graphic/visual/barracks1.png"/>
+                       {elseif $village.barracks >= '5' && $village.barracks < '20'}
+                          <div class="p_barracks_flag"></div><img class="p_barracks" src="{$config.cdn}/graphic/visual/barracks2.png"/>
+                       {elseif $village.barracks >= '20'}
+                          <div class="p_barracks_flag"></div><img class="p_barracks" src="{$config.cdn}/graphic/visual/barracks3.png"/>
+                       {/if}
+                    {/if}
+                {else if $dbname == 'stable'}
+                    {if $is_recruting_s}
+                       {if $village.stable < '5'}
+                          <div class="p_stable_flag"></div><img class="p_stable" src="{$config.cdn}/graphic/visual/stable1.gif"/>
+                       {elseif $village.stable >= '5' && $village.stable < '10'}
+                          <div class="p_stable_flag"></div><img class="p_stable" src="{$config.cdn}/graphic/visual/stable2.gif"/>
+                       {elseif $village.stable >= '10'}
+                          <div class="p_stable_flag"></div><img class="p_stable" src="{$config.cdn}/graphic/visual/stable3.gif"/>
+                       {/if}
+                    {else}
+                        {if $village.stable < '5'}
+                          <div class="p_stable_flag"></div><img class="p_stable" src="{$config.cdn}/graphic/visual/stable1.png"/>
+                       {elseif $village.stable >= '5' && $village.stable < '10'}
+                          <div class="p_stable_flag"></div><img class="p_stable" src="{$config.cdn}/graphic/visual/stable2.png"/>
+                       {elseif $village.stable >= '10'}
+                          <div class="p_stable_flag"></div><img class="p_stable" src="{$config.cdn}/graphic/visual/stable3.png"/>
+                       {/if}
+                    {/if}
+                {else if $dbname == 'garage'}
+                    {if $is_recruting_g}
+                       {if $village.garage < '5'}
+                          <div class="p_garage_flag"></div><img class="p_garage" src="{$config.cdn}/graphic/visual/garage1.gif"/>
+                       {elseif $village.garage >= '5' && $village.garage < '10'}
+                          <div class="p_garage_flag"></div><img class="p_garage" src="{$config.cdn}/graphic/visual/garage2.gif"/>
+                       {elseif $village.garage >= '10'}
+                          <div class="p_garage_flag"></div><img class="p_garage" src="{$config.cdn}/graphic/visual/garage3.gif"/>
+                       {/if}
+                    {else}
+                        {if $village.garage < '5'}
+                          <div class="p_garage_flag"></div><img class="p_garage" src="{$config.cdn}/graphic/visual/garage1.png"/>
+                       {elseif $village.garage >= '5' && $village.garage < '10'}
+                          <div class="p_garage_flag"></div><img class="p_garage" src="{$config.cdn}/graphic/visual/garage2.png"/>
+                       {elseif $village.garage >= '10'}
+                          <div class="p_garage_flag"></div><img class="p_garage" src="{$config.cdn}/graphic/visual/garage3.png"/>
+                       {/if}
+                    {/if}
+                {else if $dbname == 'snob'}
+                    {if $is_recruting_n}
+                       {if $village.snob >= '1'}
+                          <div class="p_snob_flag"></div><img class="p_snob" src="{$config.cdn}/graphic/visual/snob1.gif"/>
+                       {/if}
+                    {else}
+                        {if $village.snob >= '1'}
+                          <div class="p_snob_flag"></div><img class="p_snob" src="{$config.cdn}/graphic/visual/snob1.png"/>
+                       {/if}
+                    {/if}
+                {else if $dbname == 'smith'}
+                    {if $is_researching}
+                       {if $village.smith < '5'}
+                          <div class="p_smith_flag"></div><img class="p_smith" src="{$config.cdn}/graphic/visual/smith1.gif"/>
+                       {elseif $village.smith >= '5' && $village.smith < '15'}
+                          <div class="p_smith_flag"></div><img class="p_smith" src="{$config.cdn}/graphic/visual/smith2.gif"/>
+                       {elseif $village.smith >= '15'}
+                          <div class="p_smith_flag"></div><img class="p_smith" src="{$config.cdn}/graphic/visual/smith3.gif"/>
+                       {/if}
+                    {else}
+                        {if $village.smith < '5'}
+                          <div class="p_smith_flag"></div><img class="p_smith" src="{$config.cdn}/graphic/visual/smith1.png"/>
+                       {elseif $village.smith >= '5' && $village.smith < '15'}
+                          <div class="p_smith_flag"></div><img class="p_smith" src="{$config.cdn}/graphic/visual/smith2.png"/>
+                       {elseif $village.smith >= '15'}
+                          <div class="p_smith_flag"></div><img class="p_smith" src="{$config.cdn}/graphic/visual/smith3.png"/>
+                       {/if}
+                    {/if}
+                {else if $dbname == 'market'}
+                        {if $village.market < '10'}
+                          <div class="p_market_flag"></div><img class="p_market" src="{$config.cdn}/graphic/visual/market1.png"/>
+                       {elseif $village.market >= '10' && $village.market < '20'}
+                          <div class="p_market_flag"></div><img class="p_market" src="{$config.cdn}/graphic/visual/market2.png"/>
+                       {elseif $village.market >= '20'}
+                          <div class="p_market_flag"></div><img class="p_market" src="{$config.cdn}/graphic/visual/market3.png"/>
+                       {/if}
+                {else if $dbname == 'wood'}
+                     {if $village.wood < '10'}
+                          <div class="p_wood_flag"></div><img class="p_wood" src="{$config.cdn}/graphic/visual/wood1.png"/>
+                       {elseif $village.wood >= '10' && $village.wood < '20'}
+                          <div class="p_wood_flag"></div><img class="p_wood" src="{$config.cdn}/graphic/visual/wood2.png"/>
+                       {elseif $village.wood >= '20'}
+                          <div class="p_wood_flag"></div><img class="p_wood" src="{$config.cdn}/graphic/visual/wood3.png"/>
+                       {/if}
+                {else if $dbname == 'stone'}
+                     {if $village.stone < '10'}
+                          <div class="p_stone_flag"></div><img class="p_stone" src="{$config.cdn}/graphic/visual/stone1.png"/>
+                       {elseif $village.stone >= '10' && $village.stone < '20'}
+                          <div class="p_stone_flag"></div><img class="p_stone" src="{$config.cdn}/graphic/visual/stone2.png"/>
+                       {elseif $village.stone >= '20'}
+                          <div class="p_stone_flag"></div><img class="p_stone" src="{$config.cdn}/graphic/visual/stone3.png"/>
+                       {/if}
+                {else if $dbname == 'iron'}
+                     {if $village.iron < '10'}
+                          <div class="p_iron_flag"></div><img class="p_iron" src="{$config.cdn}/graphic/visual/iron1.png"/>
+                       {elseif $village.iron >= '10' && $village.iron < '20'}
+                          <div class="p_iron_flag"></div><img class="p_iron" src="{$config.cdn}/graphic/visual/iron2.png"/>
+                       {elseif $village.iron >= '20'}
+                          <div class="p_iron_flag"></div><img class="p_iron" src="{$config.cdn}/graphic/visual/iron3.png"/>
+                       {/if}
+                {else if $dbname == 'farm'}
+                     {if $village.farm < '10'}
+                          <div class="p_farm_flag"></div><img class="p_farm" src="{$config.cdn}/graphic/visual/farm1.png"/>
+                       {elseif $village.farm >= '10' && $village.farm < '20'}
+                          <div class="p_farm_flag"></div><img class="p_farm" src="{$config.cdn}/graphic/visual/farm2.png"/>
+                       {elseif $village.farm >= '20'}
+                          <div class="p_farm_flag"></div><img class="p_farm" src="{$config.cdn}/graphic/visual/farm3.png"/>
+                       {/if}
+                {else if $dbname == 'storage'}
+                     {if $village.storage < '10'}
+                          <div class="p_storage_flag"></div><img class="p_storage" src="{$config.cdn}/graphic/visual/storage1.png"/>
+                       {elseif $village.storage >= '10' && $village.storage < '20'}
+                          <div class="p_storage_flag"></div><img class="p_storage" src="{$config.cdn}/graphic/visual/storage2.png"/>
+                       {elseif $village.storage >= '20'}
+                          <div class="p_storage_flag"></div><img class="p_storage" src="{$config.cdn}/graphic/visual/storage3.png"/>
+                       {/if}
+                {else if $dbname == 'wall'}
+                     {if $village.wall < '10'}
+                          <div class="p_wall_flag"></div><img class="p_wall" src="{$config.cdn}/graphic/visual/wall1.png"/>
+                       {elseif $village.wall >= '10' && $village.wall < '15'}
+                          <div class="p_wall_flag"></div><img class="p_wall" src="{$config.cdn}/graphic/visual/wall2.png"/>
+                       {elseif $village.wall >= '15'}
+                          <div class="p_wall_flag"></div><img class="p_wall" src="{$config.cdn}/graphic/visual/wall3.png"/>
+                       {/if}
+                {/if}
+                
+            {/foreach}
+
+            <img class="empty" src="{$config.cdn}/graphic/visual/empty.png" alt="" usemap="#map" />
+            <map name="map" id="map_buildings">
+             {foreach from=$built_builds item=dbname key=id}
+            <area shape="poly" target="_blank" coords="{$cl_builds->get_GraphicCoords($dbname)}" href="game.php?village={$village.id}&amp;screen={$dbname}" alt="{$cl_builds->get_name($dbname)}" title="{$cl_builds->get_name($dbname)}">
+            {/foreach}
+            </map>
+            
+             
+            
+             
+         </div>
+      </td>
+   </tr>
+</table>
