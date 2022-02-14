@@ -43,6 +43,7 @@
 				<tr><td>{$lang->get("general_def")}</td><td><img src="{$config.cdn}/graphic/unit/def.png" /> {$cl_units->get_def($unit,1)}</td></tr>
 				<tr><td>{$lang->get("cav_def")}</td><td><img src="{$config.cdn}/graphic/unit/def_cav.png" /> {$cl_units->get_defCav($unit,1)}</td></tr>
 				<tr><td>{$lang->get("archer_def")}</td><td><img src="{$config.cdn}/graphic/unit/def_archer.png" /> {$cl_units->get_defArcher($unit,1)}</td></tr>
+				
 			</table><br />
 			<table class="vis">
 				<tr><th colspan="{$cl_units->get_countNeeded($unit)}">{$lang->get("needs")}</th></tr>

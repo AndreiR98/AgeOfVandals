@@ -1,4 +1,4 @@
-cd htdocs\s1_
+cd htdocs\AgeOfVandals\s1_
 :endlos
-..\..\php\php.exe bot_village.php
+..\..\..\php\php.exe bot_village.php
 goto endlos

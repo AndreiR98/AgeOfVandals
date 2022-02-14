@@ -9,10 +9,11 @@ var AOV = {
 		return document.location.href=url;
 	},
 	'selectw':function(world){
-		return AOV.go('/'+world+'/create_city.php');
+		return AOV.go('./'+world+'/create_city.php');
 	},
 	'selectsts':function(world){
-		return AOV.go('/'+world+'/game.php?screen=overview_villages');
+		return AOV.go('./'+world+'/game.php?screen=overview_villages');
+		
 	},
 	'json':function(str){
 		try{

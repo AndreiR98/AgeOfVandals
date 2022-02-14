@@ -1,4 +1,4 @@
-cd htdocs\s1_
+cd htdocs\AgeOfVandals\s1_
 :endlos
-..\..\php\php.exe do.php
+..\..\..\php\php.exe do.php
 goto endlos

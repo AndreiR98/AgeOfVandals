@@ -1,0 +1,183 @@
+<?php
+/* Smarty version 3.1.39, created on 2022-02-08 21:39:09
+  from 'E:\xampp\htdocs\AgeOfVandals\templates\index.tpl' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.39',
+  'unifunc' => 'content_6202d4ed036e18_90922177',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'a40236e3aa703d98b20e2f143d8ec42a36335ca3' => 
+    array (
+      0 => 'E:\\xampp\\htdocs\\AgeOfVandals\\templates\\index.tpl',
+      1 => 1632262705,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_6202d4ed036e18_90922177 (Smarty_Internal_Template $_smarty_tpl) {
+echo '<?xml ';?>
+version="1.0"<?php echo '?>';?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title><?php echo $_smarty_tpl->tpl_vars['config']->value['name'];?>
+ - <?php echo $_smarty_tpl->tpl_vars['lang']->value->get("title");?>
+</title>
+	<link rel="stylesheet" href="<?php echo $_smarty_tpl->tpl_vars['config']->value['cdn'];?>
+/css/index.css" type="text/css" />
+	<?php echo '<script'; ?>
+ type="text/javascript" src="<?php echo $_smarty_tpl->tpl_vars['config']->value['cdn'];?>
+/js/jquery.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="<?php echo $_smarty_tpl->tpl_vars['config']->value['cdn'];?>
+/js/jquery.ui.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="<?php echo $_smarty_tpl->tpl_vars['config']->value['cdn'];?>
+/js/jquery.form.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="<?php echo $_smarty_tpl->tpl_vars['config']->value['cdn'];?>
+/js/jquery.onenter.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="<?php echo $_smarty_tpl->tpl_vars['config']->value['cdn'];?>
+/js/index.js"><?php echo '</script'; ?>
+>
+	
+</head>
+<body id="body">
+	<div id="top_bg"></div>
+	<div id="main">
+		<table class="antet">
+			<tr>
+				<td class="stanga"></td>
+				<td class="header" width="90%" style="background: transparent no-repeat 20% bottom;">
+					<table width="100%" style="border-spacing:0px;">
+						<tr>
+							<td width="50%" valign="middle" align="center"></td>
+							<td width="50%" valign="bottom" align="right" style="padding: 0px;">
+								<table class="header_login" style="padding: 2px;" width="60%">
+								<?php if ($_smarty_tpl->tpl_vars['logged_in']->value) {?>
+									<tr><td colspan="2"><h3><?php echo $_smarty_tpl->tpl_vars['lang']->value->get("welcome");?>
+ <?php echo $_smarty_tpl->tpl_vars['user']->value['username'];?>
+!</h3></td></tr>
+									<tr>
+										<td width="50%"><a onclick="AOV.setVisibility('words', 'inline');"><div id="world" class="button"><?php echo $_smarty_tpl->tpl_vars['lang']->value->get("login");?>
+</div></a></td>
+										<form action="process.php" id="logout" method="POST">
+											<input type="hidden" name="action" value="logout">
+											<td><input type="button" id="do_logout" onclick="AOV.logout();" class="button red" value="LOGOUT" style="width:115px" /></td>
+										</form>
+									</tr>
+								<?php } else { ?>
+									<form action="process.php" id="login" method="POST">
+										<input type="hidden" name="action" value="login">
+										<tr>
+											<td><?php echo $_smarty_tpl->tpl_vars['lang']->value->get("username");?>
+:</td>
+											<td align="right"><input type="text" size="15" id="username" name="username" autocomplete="off" onenter="AOV.login();" /></td>
+										</tr>
+										<tr>
+											<td><?php echo $_smarty_tpl->tpl_vars['lang']->value->get("password");?>
+:</td>
+											<td align="right"><input type="password" size="15" id="password" name="password" autocomplete="off" onenter="AOV.login();" /></td>
+										</tr>
+										<tr>
+                                            <td colspan="2" align="right"><input type="button" id="do_login" onclick="AOV.login();" class="button green" value="<?php echo $_smarty_tpl->tpl_vars['lang']->value->get('login');?>
+" /></td>
+                                        </tr>
+                                        
+
+									</form>
+								<?php }?>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td class="dreapta"></td>
+			</tr>
+		</table>
+		
+		<table class="principal" id="round">
+			<tr>
+				<th class="sus_s"><?php if ($_smarty_tpl->tpl_vars['logged_in']->value) {?><div class="words-list" id="words">
+			<table width="100%" align="center">
+            	<form action="" method="post">
+				<tr>
+				<?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['worlds']->value, 'world');
+$_smarty_tpl->tpl_vars['world']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['world']->value) {
+$_smarty_tpl->tpl_vars['world']->do_else = false;
+?>
+				<td align="left"><input type="button" value="<?php echo $_smarty_tpl->tpl_vars['world']->value['name'];?>
+(<?php echo villages($_smarty_tpl->tpl_vars['world']->value['db'],$_smarty_tpl->tpl_vars['user']->value['id']);?>
+)"  class="button<?php echo $_smarty_tpl->tpl_vars['world']->value['class'];?>
+" onclick="<?php if (villages($_smarty_tpl->tpl_vars['world']->value['db'],$_smarty_tpl->tpl_vars['user']->value['id']) >= 1) {?>AOV.selectsts('<?php echo $_smarty_tpl->tpl_vars['world']->value['db'];?>
+');<?php } else { ?>AOV.selectw('<?php echo $_smarty_tpl->tpl_vars['world']->value['db'];?>
+')<?php }?> " style="width:105px;" />
+				</td>
+				<?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+				</tr>
+				</form>
+                <tr><td align="right"><div style="float:none;"><a href="javascript:void(0);" onclick="AOV.setVisibility('words', 'none');" ><?php echo $_smarty_tpl->tpl_vars['lang']->value->get("close");?>
+</a></div></td></tr>
+            </table>
+		</div><?php }?></th>
+			</tr>
+			<tr>
+				<td width="27%">
+					<table class="vis" cellspacing="1" width="100%" align="center">
+					<?php if ($_smarty_tpl->tpl_vars['logged_in']->value) {?>
+					<?php } else { ?>
+						<form action="process.php" id="register" method="post">
+							<input type="hidden" name="action" value="register">
+							<tr>
+								<td><?php echo $_smarty_tpl->tpl_vars['lang']->value->get("username");?>
+:</td>
+								<td><input type="text" size="15" id="reg_username" name="username" autocomplete="off" maxlength="15" onenter="AOV.register();"></td>
+							</tr>
+							<tr>
+								<td><?php echo $_smarty_tpl->tpl_vars['lang']->value->get("password");?>
+:</td>
+								<td><input type="password" size="15" id="reg_password" name="password" autocomplete="off" maxlength="30" onenter="AOV.register();"></td>
+							</tr>
+							<tr>
+								<td><?php echo $_smarty_tpl->tpl_vars['lang']->value->get("email");?>
+:</td>
+								<td><input type="text" size="15" id="reg_email" name="email" autocomplete="off" maxlength="30" onenter="AOV.register();"></td>
+							</tr>
+						<tr>
+							<td><?php echo $_smarty_tpl->tpl_vars['lang']->value->get("securitycode");?>
+:</td>
+							<td>
+								<input type="text" size="7" id="reg_captcha" name="captcha" autocomplete="off" maxlength="30" onenter="AOV.register();">
+								<img src="verifyimage.php" title="Security Code" style="position:absolute" />
+							</td>
+						</tr>
+							<tr><td colspan="2" align="right"><button type="submit" class="button green" id="do_reg" onclick="AOV.register();"><?php echo $_smarty_tpl->tpl_vars['lang']->value->get("register");?>
+</button></td></tr>
+						</form>
+					<?php }?>
+					</table>
+				</td>
+			</tr>
+	</table>
+	</div>
+</body>
+</html><?php }
+}

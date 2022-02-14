@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_get("Europe/Paris");
+date_default_timezone_get();
 
 $config['name'] = "Age of Vandals";
 $config['cdn'] = 'global_cdn';
@@ -16,13 +16,13 @@ $config['radius'] = 3;
 $config['dimension'] = 100;
 $config['prefix'] = "s1_";
 
-$config['speed'] = 900;
+$config['speed'] = 5;
 
 $config['morale_min'] = 20;
 $config['morale_max'] = 30;
 
-$config['ram']['wall']['base'] = 6.1;
-$config['ram']['wall']['factor'] = 1.09;
+$config['ram']['wall']['base'] = 4;
+$config['ram']['wall']['factor'] = 1.095;
 
 $config['defense'] = 50;
 

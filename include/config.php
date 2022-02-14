@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_get("Europe/Paris");
+date_default_timezone_get();
 
 $config['name'] = "Age of Vandals";
 $config['cdn'] = 'global_cdn';

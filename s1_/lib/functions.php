@@ -455,32 +455,25 @@ function Battle($att, $def, $village_to, $others, $defender_villages, $defenders
 	$attPoints_Foot = 0;
 	$attPoints_Cav = 0;
 	$attPoints_Bow = 0;
+	$attPoints_Siege = 0;
 	$attTotal = 0;
 	$defPoints_Foot = 0;
 	$defPoints_Cav = 0;
 	$defPoints_Bow = 0;
+	$defPoints_Siege = 0;
 	$defTotal = 0;
 	$siege_factor = 0;
 
 	$others['wall_fight'] = 0;
 
-	if($att['unit_ram'] > 0){
-		$ramHarm = $config['ram']['wall'];
-		$others['wall_fight'] = $others['wall']-round($att['unit_ram']/($ramHarm['base']*pow($ramHarm['factor'], $others['wall'])));
-		if($others['wall_fight'] < 0) {
-			$others['wall_fight'] = 0;
-		}
-	}else{
-		$others['wall_fight'] = $others['wall'];
-	}
-
-	
 
 	foreach($cl_units->get_array("dbname") as $name=>$dbname){
 		if($cl_units->get_group($dbname) == "cav"){
 			$attPoints_Cav += $cl_units->get_att($dbname, 1)*$att[$dbname];
 		}elseif($cl_units->get_group($dbname) == "archer"){
 			$attPoints_Bow += $cl_units->get_att($dbname, 1)*$att[$dbname];
+		}elseif($cl_units->get_group($dbname) == "siege"){
+			$attPoints_Siege += $cl_units->get_att($dbname, 1)*$att[$dbname];
 		}else{
 			$attPoints_Foot += $cl_units->get_att($dbname, 1)*$att[$dbname];
 		}
@@ -489,9 +482,10 @@ function Battle($att, $def, $village_to, $others, $defender_villages, $defenders
 		$defTotal += $def[$dbname];
 
 		
-	    $defPoints_Foot += $cl_units->get_def($dbname, 1)*$def[$dbname];
+	  $defPoints_Foot += $cl_units->get_def($dbname, 1)*$def[$dbname];
 		$defPoints_Cav += $cl_units->get_defCav($dbname, 1)*$def[$dbname];
 		$defPoints_Bow += $cl_units->get_defarcher($dbname, 1)*$def[$dbname];
+		$defPoints_Siege += $cl_units->get_defSiege($dbname, 1)*$def[$dbname];
 	}
 
 	
@@ -507,20 +501,25 @@ function Battle($att, $def, $village_to, $others, $defender_villages, $defenders
     	$defPoints_Bow = 0;
     }
 
+    if($attPoints_Siege == 0){
+    	$defPoints_Siege = 0;
+    }
+
 
 	$attPoints_Total = $attPoints_Foot+$attPoints_Cav+$attPoints_Bow;
 
 	$defPoints_Total = $defPoints_Foot+$defPoints_Cav+$defPoints_Bow;
 
-
 	if($attPoints_Total <= 0){
 		$attFoot_factor = 0;
 		$attCav_factor = 0;
 		$attBow_factor = 0;
+		$attSiege_factor = 0;
 	}else{
 		$attFoot_factor = $attPoints_Foot/$attPoints_Total;
 		$attCav_factor = $attPoints_Cav/$attPoints_Total;
 		$attBow_factor = $attPoints_Bow/$attPoints_Total;
+		$attSiege_factor = $attPoints_Siege/$attPoints_Total;
 	}
 
 	$attPoints_real = $attPoints_Total;
@@ -529,28 +528,78 @@ function Battle($att, $def, $village_to, $others, $defender_villages, $defenders
 	$attFoot = $attPoints_real*$attFoot_factor;
 	$attCav = $attPoints_real*$attCav_factor;
 	$attBow = $attPoints_real*$attBow_factor;
-
-	
+	$attSiege = $attPoints_real*$attSiege_factor;
 
 	if($defPoints_Total <= 0){
 		$defFoot_factor = 0;
 		$defCav_factor = 0;
 		$defBow_factor = 0;
+		$defSiege_factor = 0;
 	}else{
 		$defFoot_factor = $defPoints_Foot/$defPoints_Total;
 		$defCav_factor = $defPoints_Cav/$defPoints_Total;
 		$defBow_factor = $defPoints_Bow/$defPoints_Total;
+		$defSiege_factor = $defPoints_Siege/$defPoints_Total;
+	}
+
+	 
+	
+
+	
+	$defSiege = $defPoints_Total*$defSiege_factor;
+
+	if($attPoints_Siege > $defPoints_Siege){
+		if($defSiege <= 0){
+			$att_lose_siege = 0;
+		}else{
+			$att_lose_siege = (($defSiege*pow($defSiege, 1/2))/(1+$attSiege*pow($attSiege, 1/2)));
+		}
+
+		//Calculate wall damage
+		if($att['unit_ram'] > 0){
+			$ramHarm = $config['ram']['wall'];
+
+			$ram_survived = round($att['unit_ram']*(1-$att_lose_siege));
+
+			$others['wall_fight'] = $others['wall']-round($ram_survived/($ramHarm['base']*pow($ramHarm['factor'], $others['wall'])));
+		}else{
+			$others['wall_fight'] = $others['wall'];
+		}
+
+		if($others['wall_fight'] < 0){
+			$others['wall_fight'] = 0;
+		}
+	}elseif($attPoints_Siege < $defPoints_Siege){
+		$att_lose_siege = ['unit_ram'=>$att['unit_ram'], 'unit_cat'=>$att['unit_cat'], 'unit_engi'=>$att['unit_engi']];
+
+		//Calculate wall damage
+
+		if($att['unit_ram'] > 0){
+			if($defSiege <= 0){
+				$ram_factor = 1;
+			}else{
+				$ram_factor = $defSiege/$defTotal;
+			}
+
+			$ramHarm = $config['ram']['wall'];
+			$others['wall_fight'] = $others['wall']-round(($att['unit_ram']*$cl_units->get_att("unit_ram", 1)*$ram_factor)/($ramHarm['base']*pow($ramHarm['factor'], $others['wall'])));
+		}else{
+			$others['wall_fight'] = $others['wall'];
+		}
+
+		if($others['wall_fight'] < 0){
+			$others['wall_fight'] = 0;
+		}
+
 	}
 
 	$defPoints_real = $defPoints_Total;
 	$defPoints_real += $config['defense'];
-	$defPoints_real *= $arr_wall_bonus[$others['wall_fight']]+1; 
-	
+	$defPoints_real *= $arr_wall_bonus[$others['wall_fight']]+1;
 
 	$defFoot = $defPoints_real*$defFoot_factor;
 	$defCav = $defPoints_real*$defCav_factor;
 	$defBow = $defPoints_real*$defBow_factor;
-
 
 	if($attPoints_real > $defPoints_real){
 		$others['wins'] = 'att';
@@ -587,6 +636,12 @@ function Battle($att, $def, $village_to, $others, $defender_villages, $defenders
 			$att_lose_bow = (($defBow*pow($defBow, 1/2))/(1+$attBow*pow($attBow, 1/2)));
 		}
 
+		if($defSiege <= 0){
+			$att_lose_siege = 0;
+		}else{
+			$att_lose_siege = (($defSiege*pow($defSiege, 1/2))/(1+$attSiege*pow($attSiege, 1/2)));
+		}
+
        
 
 		foreach($cl_units->get_array("dbname") as $name=>$dbname){
@@ -595,15 +650,15 @@ function Battle($att, $def, $village_to, $others, $defender_villages, $defenders
 			}elseif($cl_units->get_group($dbname) == "archer"){
 				$att_lose[$dbname] = round($att[$dbname]*$att_lose_bow);
 			}elseif($cl_units->get_group($dbname) == "siege"){
-				$siege_factor = $att_lose_foot+$att_lose_cav+$att_lose_bow;
-				$att_lose['unit_ram'] = round($att['unit_ram']*$siege_factor);
+				$att_lose[$dbname] = round($att[$dbname]*$att_lose_siege);
 			}else{
 				$att_lose[$dbname] = round($att[$dbname]*$att_lose_foot);
 			}
 
 			$att_lost_total += $att_lose[$dbname];
 		}
-		echo "Snob coef:".$siege_factor;
+		
+
 		if($att_lost_total <= 0){
 			$others['att_color'] = "green";
 		}else{
@@ -612,7 +667,7 @@ function Battle($att, $def, $village_to, $others, $defender_villages, $defenders
 
 		if($att['unit_ram'] > 0){
 			
-			$ramW = $config['ram']['wall'];
+			$ramHarm = $config['ram']['wall'];
 
 			$max_wall_damage = ((($att['unit_ram'])*$cl_units->get_att("unit_ram", 1))/$ramW['base']*pow($ramW['factor'], $others['wall']));
             
@@ -626,15 +681,18 @@ function Battle($att, $def, $village_to, $others, $defender_villages, $defenders
 		}else{
 			$others['new_wall'] = $others['wall'];
 		}
-		if(($att['unit_snob']-$att_lose['unit_snob']) > 0){
-			$others['morale'] = rand($config['morale_min'], $config['morale_max']);
-		}
 	}elseif($defPoints_real > $attPoints_real){
 		$others['wins'] = 'def';
 		$others['att_color'] = "red";
 		$others['see'] = false;
 
-		$att_lose = $att;
+		foreach($cl_units->get_array("dbname") as $name=>$dbname){
+			if($cl_units->get_group($dbname) == 'siege'){
+				$att_lose[$dbname] = $att_lose_siege[$dbname];
+			}else{
+				$att_lose[$dbname] = $att[$dbname];
+			}
+		}	
 
 		$att_lost_total = $attTotal;
 		$def_lost_total = 0;
@@ -738,6 +796,149 @@ function Battle($att, $def, $village_to, $others, $defender_villages, $defenders
     	         "def_lose_support"=>$defenders_dead_per_village,
     	         "others"=>$others
                 );
+
+	
+}
+
+function Battle_Sim($att, $deff, $others){
+	global $config;
+	global $cl_units;
+	global $arr_wall_bonus;
+
+	$attPoints_Foot = 0;
+	$attPoints_Cav = 0;
+	$attPoints_Bow = 0;
+
+	$attTotal = 0;
+
+	$defPoints_Foot = 0;
+	$defPoints_Cav = 0;
+	$defPoints_Bow = 0;
+
+	$defTotal = 0;
+
+	$others['wall_fight'] = 0;
+
+	foreach($cl_units->get_array("dbname") as $name=>$dbname){
+		if($cl_units->get_group($dbname) == 'foot'){
+			$attPoints_Foot += $cl_units->get_att($dbname, 1)*$att[$dbname];
+		}
+		if($cl_units->get_group($dbname) == 'cav'){
+			$attPoints_Cav += $cl_units->get_att($dbname, 1)*$att[$dbname];
+		}
+		if($cl_units->get_group($dbname) == 'bow'){
+			$attPoints_Bow += $cl_units->get_att($dbname, 1)*$att[$dbname];
+		}
+
+		$attTotal += $att[$dbname];
+	  $defTotal += $deff[$dbname];
+
+	  $defPoints_Foot += $cl_units->get_def($dbname, 1)*$deff[$dbname];
+	  $defPoints_Cav += $cl_units->get_defCav($dbname, 1)*$deff[$dbname];
+	  $defPoints_Bow += $cl_units->get_defarcher($dbname, 1)*$deff[$dbname];
+	}
+
+	if($attPoints_Foot == 0){
+    $defPoints_Foot = 0;
+  }
+
+  if($attPoints_Cav == 0){
+    $defPoints_Cav = 0;
+  }
+
+  if($attPoints_Bow == 0){
+    $defPoints_Bow = 0;
+  }
+
+  if($attPoints_Siege == 0){
+    $defPoints_Siege = 0;
+  }
+
+	$attPoints_Total = $attPoints_Foot+$attPoints_Cav+$attPoints_Bow;
+
+	$defPoints_Total = $defPoints_Foot+$defPoints_Cav+$defPoints_Bow;
+
+	if($attPoints_Total <= 0){
+		$attFoot_factor = 0;
+		$attCav_factor = 0;
+		$attBow_factor = 0;
+	}else{
+		$attFoot_factor = $attPoints_Foot/$attPoints_Total;
+		$attCav_factor = $attPoints_Cav/$attPoints_Total;
+		$attBow_factor = $attPoints_Bow/$attPoints_Total;
+	}
+
+	$attPoints_real = $attPoints_Total;
+	$attPoints_real *= 1+(100+$others['luck'])/100;
+
+	$attFoot = $attPoints_real*$attFoot_factor;
+	$attCav = $attPoints_real*$attCav_factor;
+	$attBow = $attPoints_real*$attBow_factor;
+
+	if($defPoints_Total <= 0){
+		$defFoot_factor = 0;
+		$defCav_factor = 0;
+		$defBow_factor = 0;
+	}else{
+		$defFoot_factor = $defPoints_Foot/$defPoints_Total;
+		$defCav_factor = $defPoints_Cav/$defPoints_Total;
+		$defBow_factor = $defPoints_Bow/$defPoints_Total;
+	}
+
+	$defPoints_real = $defPoints_Total;
+	$defPoints_real += $config['defense'];
+	
+
+	if($att['unit_ram'] > 0){
+		$ramHarm = $config['ram']['wall'];
+
+		$others['wall_fight'] = $others['wall']-round(($att['unit_ram']*$cl_units->get_att('unit_ram', 1))/($ramHarm['base']*pow($ramHarm['factor'], $others['wall'])));
+		
+		$min_wall = round($others['wall']/2);
+
+		if($others['wall_fight'] < $min_wall){
+			$others['wall_fight'] = $min_wall;
+		}
+	}else{
+		$others['wall_fight'] = $others['wall'];
+	}
+
+	$defPoints_real *= $arr_wall_bonus[$others['wall']]+1;
+
+	$defFoot = $defPoints_real*$defFoot_factor;
+	$defCav = $defPoints_real*$defCav_factor;
+	$defBow = $defPoints_real*$defBow_factor;
+
+	if($attPoints_real > $defPoints_real){
+		$others['wins'] = 'att';
+		$others['see_def'] = true;
+		$others['def_color'] = 'red';
+		$def_lose = $def;
+		$def_lost_total = $defTotal;
+		$att_lost_total = 0;
+		$att_lose = array();
+
+		if($defFoot <= 0){
+			$att_lose_foot = 0;
+		}else{
+			$att_lose_foot = (($defFoot*pow($defFoot, 1/2))/($attFoot*pow($attFoot, 1/2)));
+		}
+
+		if($defCav <= 0){
+			$att_lose_cav = 0;
+		}else{
+			$att_lose_cav = (($defCav*pow($defCav, 1/2))/($attCav*pow($attCav, 1/2)));
+		}
+	}
+
+  
+
+	
+
+
+
+
+  return ['att'=>($attPoints_real)];
 
 	
 }

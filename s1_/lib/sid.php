@@ -16,7 +16,7 @@ class sid{
 			$sid_letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 			$sid = "";
 			for($n=1;$n<=32;$n++){
-				$sid .= $sid_letters{rand(0, 61)};
+				$sid .= $sid_letters[rand(0, 61)];
 			}
 			$result = $this->db->numrows("SELECT COUNT(sid) FROM `sessions` WHERE `sid`='".$sid."'");
 		}while(($result)==0);

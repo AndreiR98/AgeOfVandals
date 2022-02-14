@@ -14,10 +14,10 @@ require_once("./include.inc.php");
 
 $sid = new sid();
 $session = $sid->check_sid($_COOKIE['session']);
-if(!$session['userid']){
+/*if(!$session['userid']){
 	header ("Location: sid_wrong.php");
 	exit;
-}
+}*/
 
 $userdatas = new GetUserData();
 $usersql = array('villages', 'coins', 'next_coin', 'points', 'tribe');

@@ -1,6 +1,6 @@
 <?php
 $cl_units = new units();
-$cl_units->set_unitfactor("0.68","0.94355");
+$cl_units->set_unitfactor("0.96","0.96");
 
 $cl_units->add_unit("Spearman", "unit_spear");
 $cl_units->set_woodprice("50");
@@ -46,7 +46,7 @@ $cl_units->set_stoneprice("30");
 $cl_units->set_ironprice("40");
 $cl_units->set_bhprice("1");
 $cl_units->set_time("1250");
-$cl_units->set_att("40","1.0455");
+$cl_units->set_att("55","1.0455");
 $cl_units->set_def("10","1.045");
 $cl_units->set_defcav("5","1.045");
 $cl_units->set_defarcher("10","1.045");
@@ -168,7 +168,7 @@ $cl_units->set_booty("0");
 $cl_units->set_needed(array("garage"=>"1"));
 $cl_units->set_recruit_in("garage");
 $cl_units->set_specials(array());
-$cl_units->set_group("siege");
+$cl_units->set_group("foot");
 $cl_units->set_col("C");
 $cl_units->set_attType("off");
 
